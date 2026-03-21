@@ -139,6 +139,26 @@ All methods operate on the same multi-modal observation space (BEV + radar/LiDAR
 
 ### 🧠 Model Architecture
 
+| Component              | Specification       |
+| ---------------------- | ------------------- |
+| Input modalities       | BEV + Radar / LiDAR |
+| Fusion                 | Cross-attention     |
+| Latent dimension       | 64                  |
+| Attention heads        | 8                   |
+| Final hidden layer     | 512                 |
+| Encoder activation     | ReLU                |
+| Transformer activation | GELU                |
+| Normalization          | LayerNorm           |
+| Positional encoding    | Learnable           |
+| Output heads           | Q / Actor / Critic  |
+
+Encoders (BEV & Radar/LiDAR):
+
+Channels: 16 → 32 → 64
+
+Kernels: 5×5, 3×3, 3×3
+
+Strides: 2, 2, 1
 
 
 
