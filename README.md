@@ -160,5 +160,27 @@ Kernels: 5×5, 3×3, 3×3
 
 Strides: 2, 2, 1
 
+### ⚙️ Training Hyperparameters
+
+| Parameter       | DQN       | PPO                             | SAC                                    |
+| --------------- | --------- | ------------------------------- | -------------------------------------- |
+| Total steps     | 1e5       | 5.24e5                          | 1e5                                    |
+| Discount (γ)    | 0.99      | 0.99                            | 0.99                                   |
+| Learning rates  | 1e-4      | Enc: 5e-5, Pol: 1e-4, Val: 1e-4 | Enc: 5e-5, Pol: 1e-4, Q: 1e-4, α: 1e-4 |
+| Batch size      | 64        | 256 / 64                        | 16                                     |
+| Replay buffer   | 5e4       | —                               | 1e5                                    |
+| Target update   | 100 steps | —                               | τ = 0.005                              |
+| Exploration     | ε-greedy  | stochastic                      | entropy                                |
+| Loss            | TD        | clipped objective               | SAC                                    |
+| GAE (λ)         | —         | 0.95                            | —                                      |
+| Clip coef       | —         | 0.2                             | —                                      |
+| Entropy coef    | —         | 0.001                           | learned                                |
+| Reward scale    | —         | 0.1                             | 0.1                                    |
+| Learning starts | —         | —                               | 5000                                   |
+| Policy freq     | —         | per update                      | 2                                      |
+
+
+
+
 
 
