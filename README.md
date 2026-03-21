@@ -88,8 +88,8 @@ export PYTHONPATH=$CARLA_ROOT/PythonAPI/carla/agents:$PYTHONPATH
 ```
 
 ### Install gym-carla
+Download the repository first. Then, 
 ```
-git clone https:
 cd Radar_Carla_Gym
 pip install -r requirements.txt
 pip install -e .
