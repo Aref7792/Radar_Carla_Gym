@@ -64,7 +64,7 @@ Note: Do NOT install `carla` via pip.
 # Running CARLA
 
 ```bash
-cd ~/carla/CARLA_0.9.13
+cd /path/to/CARLA_0.9.13
 ./CarlaUE4.sh -RenderOffScreen -carla-port=2000
 ```
 
