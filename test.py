@@ -61,7 +61,7 @@ def main():
     'radar_range': 32,            # meters (match obs_range recommended)
     'radar_pps': 3000,            # points per second
     'radar_vmax': 30.0,           # m/s clamp for visualization
-    'render_panels': 4,           # 4-panel display: birdeye, lidar, radar, camera
+    'render_panels': 5,           # 5-panel display: birdeye, radar/lidar, radr, lidar, camera
     "render": True,
     "enable_pygame": True,
     "frame_stack" : 4
@@ -69,8 +69,6 @@ def main():
 
   env = gym.make('carla-v0', params=params)
   obs = env.reset()
-  print(obs['radar'].shape)
-  print(env.action_space.sample())
 
   # Basic sanity check: radar is present
   if 'radar' not in obs:
