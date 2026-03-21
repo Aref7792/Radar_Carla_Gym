@@ -125,7 +125,7 @@ Server: 0.9.13
 python test.py
 ```
 
-### 📊 Benchmark
+## 📊 Benchmark
 
 We evaluate three representative RL algorithms:
 
@@ -136,6 +136,8 @@ PPO — on-policy actor-critic
 SAC — off-policy actor-critic
 
 All methods operate on the same multi-modal observation space (BEV + radar/LiDAR) and share a consistent encoder architecture.
+
+### 🧠 Model Architecture
 
 
 
