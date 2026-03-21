@@ -1,4 +1,4 @@
-# 🚗 gym-carla (CARLA 0.9.13)
+# 🚗 A Standardized Multi-Modal Reinforcement Learning Benchmark for Autonomous Driving with Explicit Dynamic Sensing
 
 An OpenAI Gym-compatible environment for the CARLA simulator, designed for multi-modal reinforcement learning in autonomous driving for urban driving scenarios. This version is configured for CARLA 0.9.13 (updated from the original 0.9.6 setup).
 
@@ -6,9 +6,9 @@ An OpenAI Gym-compatible environment for the CARLA simulator, designed for multi
 
 # Overview
 
-This repository introduces a Gym-compatible CARLA benchmark for multi-modal reinforcement learning in autonomous driving, with a focus on explicit dynamic sensing through radar.
+This repository introduces a Gym-compatible CARLA benchmark for multi-modal reinforcement learning in autonomous driving, with a focus on explicit dynamic sensing through radar, and it is the formal implimentation of paper "A Standardized Multi-Modal Reinforcement Learning Benchmark for Autonomous Driving with Explicit Dynamic Sensing" submitted to URVIS CVPR Workshop. 
 
-The environment provides a unified observation space including radar, joint radar/LiDAR, LiDAR, BEV, and ego-state features, where radar encodes motion and the joint radar/LiDAR representation combines dynamic and geometric information. All modalities are returned as stacked frames, enabling temporal reasoning while remaining compatible with standard RL methods.
+The environment provides a multi-modal observation space including radar, joint radar/LiDAR, LiDAR, BEV, and ego-state features, where radar encodes motion and the joint radar/LiDAR representation combines dynamic and geometric information. All modalities can be returned as stacked frames, enabling temporal reasoning while remaining compatible with standard RL methods.
 
 The benchmark supports controlled comparisons between explicit dynamic sensing and temporal stacking, allowing systematic evaluation of their impact on policy performance, robustness, and generalization.
 
@@ -110,6 +110,55 @@ python test.py
 ```
 
 ---
+
+# Benchmark
+
+To show the utility of the enviroment, the implimentation of DQN, PPO, and SAC using the proposed observation space that combines BEV with radar/LiDAR-based dynamic sensing. All of RL models use a similar encoder architecture as follows: 
+### Model Architecture
+
+| Parameter | Setting | Value / Description |
+|-----------|---------|---------------------|
+| Input modalities | — | Bird’s-eye view (BEV) and radar |
+| Fusion type | — | Cross-attention fusion |
+| Latent embedding size | latent_size | 64 |
+| Number of attention heads | num_heads | 8 |
+| Final hidden layer size | final_layer | 512 |
+| Q-network output | — | Discrete action values |
+| BEV encoder channels | — | 16 → 32 → 64 |
+| Radar/LiDAR encoder channels | — | 16 → 32 → 64 |
+| BEV convolution kernels | — | 5×5, 3×3, 3×3 |
+| Radar/LiDAR convolution kernels | — | 5×5, 3×3, 3×3 |
+| BEV convolution strides | — | 2, 2, 1 |
+| Radar convolution strides | — | 2, 2, 1 |
+| Encoder activation | — | ReLU |
+| Attention block normalization | — | LayerNorm |
+| Transformer MLP activation | — | GELU |
+| Positional encoding | — | Learnable positional embedding |
+| Output head | — | Linear Q, actor/critic-head, with ReLU hidden layer |
+
+Hyperparameters are as follows: 
+| Parameter                | DQN             | PPO                                 | SAC                                                 |
+| ------------------------ | --------------- | ----------------------------------- | --------------------------------------------------- |
+| **Total Steps**          | 1e5             | 5.24e5                              | 1e5                                                 |
+| **Discount ((\gamma))**  | 0.99            | 0.99                                | 0.99                                                |
+| **Learning Rate(s)**     | 1e-4            | Enc: 5e-5<br>Pol: 1e-4<br>Val: 1e-4 | Enc: 5e-5<br>Pol: 1e-4<br>Q: 1e-4<br>(\alpha): 1e-4 |
+| **Batch Size**           | 64              | 256 (rollout)<br>64 (minibatch)     | 16                                                  |
+| **Replay Buffer**        | 5e4             | —                                   | 1e5                                                 |
+| **Target Update**        | Every 100 steps | —                                   | Soft ((\tau=0.005))                                 |
+| **Optimizer**            | Adam            | Adam                                | Adam                                                |
+| **Exploration**          | ε-greedy        | Stochastic policy                   | Entropy-based                                       |
+| **Exploration Schedule** | ε: 1.0 → 0.1    | —                                   | Auto-tuned (\alpha)                                 |
+| **Loss**                 | TD loss         | Clipped objective                   | Soft actor-critic                                   |
+| **GAE ((\lambda))**      | —               | 0.95                                | —                                                   |
+| **Clip Coef**            | —               | 0.2                                 | —                                                   |
+| **Entropy Coef**         | —               | 0.001                               | Learned                                             |
+| **Reward Scale**         | —               | 0.1                                 | 0.1                                                 |
+| **Learning Starts**      | —               | —                                   | 5000                                                |
+| **Policy Freq**          | —               | Per update                          | 2                                                   |
+| **Target Freq**          | —               | —                                   | 1                                                   |
+| **Latent Size**          | 64              | 64                                  | 64                                                  |
+| **Attention Heads**      | 8               | 8                                   | 8                                                   |
+
 
 # Project Structure
 
