@@ -66,7 +66,7 @@ pip install -U "setuptools<66" "wheel<0.41"
 ```
 mkdir -p ~/carla
 cd ~/carla
-wget https://github.com/carla-simulator/carla/releases/download/0.9.13/CARLA_0.9.13.tar.gz
+wget 
 tar -xvzf CARLA_0.9.13.tar.gz
 ```
 
@@ -89,8 +89,8 @@ export PYTHONPATH=$CARLA_ROOT/PythonAPI/carla/agents:$PYTHONPATH
 
 ### Install gym-carla
 ```
-git clone https://github.com/cjy1992/gym-carla.git
-cd gym-carla
+git clone https:
+cd Radar_Carla_Gym
 pip install -r requirements.txt
 pip install -e .
 ```
