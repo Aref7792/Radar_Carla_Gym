@@ -197,6 +197,18 @@ This project builds upon:
 
 https://github.com/cjy1992/gym-carla
 
+## 🔬 Research Use
+
+This benchmark supports:
+
+Multi-modal RL research
+
+Sensor fusion (radar vs LiDAR vs BEV)
+
+Robustness & generalization analysis
+
+Dynamic scene understanding in autonomous driving
+
 
 
 
