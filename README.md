@@ -112,7 +112,7 @@ python test.py
 # Project Structure
 
 ```bash
-gym-carla/
+Radar_Carla_Gym/
 ├── gym_carla/
 ├── test.py
 ├── requirements.txt
