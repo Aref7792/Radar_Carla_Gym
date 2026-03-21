@@ -150,7 +150,7 @@ pip install -U "setuptools<66" "wheel<0.41"
 
 mkdir -p ~/carla
 cd ~/carla
-wget https://github.com/carla-simulator/carla/releases/download/0.9.13/CARLA_0.9.13.tar.gz
+wget https://anonymous.4open.science/r/Spiking_MM_DQN-FFF3
 tar -xvzf CARLA_0.9.13.tar.gz
 
 export CARLA_ROOT=~/carla/CARLA_0.9.13
