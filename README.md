@@ -103,3 +103,21 @@ cd /path/to/CARLA_0.9.13
 ```
 ### ✅ Verification
 
+```
+python - <<'PY'
+import carla
+c = carla.Client('localhost', 2000)
+c.set_timeout(5.0)
+print("Client:", c.get_client_version())
+print("Server:", c.get_server_version())
+PY
+```
+
+Expected:
+
+```
+Client: 0.9.13
+Server: 0.9.13
+```
+
+
