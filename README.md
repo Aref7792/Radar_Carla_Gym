@@ -159,7 +159,7 @@ Hyperparameters are as follows:
 | **Latent Size**          | 64              | 64                                  | 64                                                  |
 | **Attention Heads**      | 8               | 8                                   | 8                                                   |
 
-
+Their corrspong directory include the code of implemetnation. 
 # Project Structure
 
 ```bash
@@ -167,6 +167,9 @@ Radar_Carla_Gym/
 ├── gym_carla/
 ├── test.py
 ├── requirements.txt
+├── DQN
+├── SAC
+├── PPO
 └── setup.py
 ```
 
