@@ -111,11 +111,13 @@ python test.py
 
 # Project Structure
 
+```bash
 gym-carla/
-|-- gym_carla/
-|-- test.py
-|-- requirements.txt
-`-- setup.py
+├── gym_carla/
+├── test.py
+├── requirements.txt
+└── setup.py
+```
 
 ---
 
