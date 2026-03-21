@@ -110,13 +110,13 @@ python test.py
 ---
 
 # Project Structure
-``
-gym-carla/
+
+``gym-carla/
 ├── gym_carla/
 ├── test.py
 ├── requirements.txt
-├── setup.py
-``
+├── setup.py``
+
 ---
 
 # Important Notes
