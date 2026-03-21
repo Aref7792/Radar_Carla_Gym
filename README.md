@@ -6,7 +6,11 @@ An OpenAI Gym-compatible environment for the CARLA simulator, designed for reinf
 
 # Overview
 
-gym-carla provides a Gym-style interface to CARLA, enabling rapid development and evaluation of reinforcement learning algorithms in realistic driving environments.
+This repository introduces a Gym-compatible CARLA benchmark for multi-modal reinforcement learning in autonomous driving, with a focus on explicit dynamic sensing through radar.
+
+The environment provides a unified observation space including radar, joint radar/LiDAR, LiDAR, BEV, and ego-state features, where radar encodes motion and the joint radar/LiDAR representation combines dynamic and geometric information. All modalities are returned as stacked frames, enabling temporal reasoning while remaining compatible with standard RL methods.
+
+The benchmark supports controlled comparisons between explicit dynamic sensing and temporal stacking, allowing systematic evaluation of their impact on policy performance, robustness, and generalization.
 
 ---
 
