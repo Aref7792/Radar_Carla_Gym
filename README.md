@@ -166,7 +166,7 @@ Strides: 2, 2, 1
 | --------------- | -------------------- | ------------------------------- | -------------------------------------- |
 | Total steps     | 1e5                  | 5.24e5                          | 1e5                                    |
 | Discount (γ)    | 0.99                 | 0.99                            | 0.99                                   |
-| Learning rates  | En: 1e-5, Head: 5e-5 | Enc: 5e-5, Pol: 1e-4, Val: 1e-4 | Enc: 5e-5, Pol: 1e-4, Q: 1e-4, α: 1e-4 |
+| Learning rates  | En: 1e-5, Head: 1e-4 | Enc: 5e-5, Pol: 1e-4, Val: 1e-4 | Enc: 5e-5, Pol: 1e-4, Q: 1e-4, α: 1e-4 |
 | Batch size      | 64                   | 256 / 64                        | 16                                     |
 | Replay buffer   | 5e4                  | —                               | 1e5                                    |
 | Target update   | 100 steps            | —                               | τ = 0.005                              |
