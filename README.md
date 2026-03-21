@@ -49,35 +49,57 @@ This framework supports **robust, reproducible evaluation of perception–decisi
 
 ## 🚀 Installation
 
-```bash
+
 # Create environment
+
+```bash
 conda create -n carla913 python=3.8 -y
 conda activate carla913
-
+```
 # Ensure compatibility with CARLA dependencies
+```
 pip install -U "pip<24.1"
 pip install -U "setuptools<66" "wheel<0.41"
-
+```
 # Download CARLA
+
+```
 mkdir -p ~/carla
 cd ~/carla
 wget https://github.com/carla-simulator/carla/releases/download/0.9.13/CARLA_0.9.13.tar.gz
 tar -xvzf CARLA_0.9.13.tar.gz
+```
 
 # Install system dependencies
+```
 sudo apt update
 sudo apt install -y \
     libtiff5 libpng16-16 libjpeg-dev libglu1-mesa \
     libglib2.0-0 libsm6 libxext6 libxrender1 libgomp1
+```
 
 # Configure CARLA Python API
+
+```
 export CARLA_ROOT=~/carla/CARLA_0.9.13
 export PYTHONPATH=$CARLA_ROOT/PythonAPI/carla/dist/carla-0.9.13-py3.8-linux-x86_64.egg:$PYTHONPATH
 export PYTHONPATH=$CARLA_ROOT/PythonAPI/carla:$PYTHONPATH
 export PYTHONPATH=$CARLA_ROOT/PythonAPI/carla/agents:$PYTHONPATH
+```
 
 # Install gym-carla
+```
 git clone https://github.com/cjy1992/gym-carla.git
 cd gym-carla
 pip install -r requirements.txt
 pip install -e .
+```
+
+# 🖥️ Running CARLA
+
+```
+cd /path/to/CARLA_0.9.13
+./CarlaUE4.sh -RenderOffScreen -carla-port=2000
+
+```
+
