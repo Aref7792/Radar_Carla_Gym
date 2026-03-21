@@ -1,6 +1,6 @@
 # 🚗 gym-carla (CARLA 0.9.13)
 
-An OpenAI Gym-compatible environment for the CARLA simulator, designed for multi-modal reinforcement learning in autonomous driving. This version is configured for CARLA 0.9.13 (updated from the original 0.9.6 setup).
+An OpenAI Gym-compatible environment for the CARLA simulator, designed for multi-modal reinforcement learning in autonomous driving for urban driving scenarios. This version is configured for CARLA 0.9.13 (updated from the original 0.9.6 setup).
 
 ---
 
