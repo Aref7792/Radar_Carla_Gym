@@ -101,7 +101,7 @@ Expected:
 
 ---
 
-# Usage
+# Test
 
 ```bash
 python test.py
@@ -110,13 +110,13 @@ python test.py
 ---
 
 # Project Structure
-
+``
 gym-carla/
 ├── gym_carla/
 ├── test.py
 ├── requirements.txt
 ├── setup.py
-
+``
 ---
 
 # Important Notes
