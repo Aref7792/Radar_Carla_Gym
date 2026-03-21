@@ -1,19 +1,6 @@
 # 🚗 A Standardized Multi-Modal Reinforcement Learning Benchmark for Autonomous Driving with Explicit Dynamic Sensing
 
-<p align="center">
-  <b>CVPR URVIS Workshop Submission</b><br>
-  A reproducible benchmark for multi-modal RL with explicit dynamic sensing in CARLA
-</p>
-
----
-
-## 🎥 Demo
-
-<p align="center">
-  <img src="assets/demo.gif" width="700">
-</p>
-
-> Example rollout using radar-enhanced observations (BEV + dynamic sensing)
+An OpenAI Gym-compatible CARLA environment for **multi-modal reinforcement learning (RL)** in urban autonomous driving, with a focus on **explicit dynamic sensing via radar**.
 
 ---
 
@@ -21,142 +8,208 @@
 
 This repository provides the official implementation of:
 
-> **A Standardized Multi-Modal Reinforcement Learning Benchmark for Autonomous Driving with Explicit Dynamic Sensing**
+> **A Standardized Multi-Modal Reinforcement Learning Benchmark for Autonomous Driving with Explicit Dynamic Sensing**  
+> *(Submitted to CVPR URVIS Workshop)*
 
-We introduce a **Gym-compatible CARLA benchmark (v0.9.13)** for systematic evaluation of multi-modal RL algorithms.
+We introduce a **reproducible, Gym-compatible benchmark** built on CARLA (v0.9.13), designed for systematic evaluation of multi-modal RL algorithms under controlled conditions.
 
-### 🔑 Key Contributions
+### Key Features
 
-- **Explicit dynamic sensing via radar**
-- **Unified multi-modal observation interface**
-- **Controlled benchmarking protocol**
-- **Reproducible evaluation across RL methods**
+- **Multi-modal observation space**
+  - Radar (dynamic sensing)
+  - LiDAR (geometric structure)
+  - Joint Radar/LiDAR fusion
+  - Bird’s-Eye View (BEV) semantic rendering
+  - Ego-state features
 
----
+- **Explicit dynamic modeling**
+  - Radar directly encodes motion (velocity-aware perception)
+  - Reduces reliance on implicit temporal stacking
 
-## 🧠 Observation Pipeline
+- **Temporal representation**
+  - Frame stacking supported across all modalities
 
-<p align="center">
-  <img src="assets/pipeline.png" width="800">
-</p>
+- **Benchmarking capability**
+  - Enables controlled comparison between:
+    - Static perception (BEV / LiDAR)
+    - Dynamic sensing (radar-enhanced observations)
 
-The environment provides:
-
-- **BEV semantic rendering** (scene structure)
-- **Radar** (dynamic motion, velocity-aware)
-- **LiDAR** (geometry)
-- **Radar/LiDAR fusion**
-- **Ego-state vector**
-
-### Design Principle
-
-Unlike prior work relying on **temporal stacking**, this benchmark:
-
-- Encodes **motion explicitly (radar)**
-- Reduces ambiguity in velocity estimation
-- Enables **physically grounded perception**
+This framework supports **robust, reproducible evaluation of perception–decision pipelines** in RL-based autonomous driving.
 
 ---
 
-## 📊 Benchmark Setup
+## ⚙️ Requirements
 
-We evaluate:
-
-- **DQN** (value-based)
-- **PPO** (on-policy actor-critic)
-- **SAC** (off-policy actor-critic)
-
-All methods:
-
-- Use **identical observation space**
-- Share **same encoder architecture**
-- Are trained under **identical environment settings**
-- Results averaged over **3 random seeds**
+- Ubuntu 20.04 / 22.04  
+- Python 3.8 (Conda recommended)  
+- CARLA 0.9.13  
+- NVIDIA GPU (recommended)
 
 ---
 
-## 📈 Results
+# 🚀 Installation
 
-<p align="center">
-  <img src="assets/results.png" width="700">
-</p>
 
-### Key Findings
-
-- Dynamic sensing (**radar**) improves:
-  - Policy stability
-  - Robustness to traffic variation
-  - Generalization across scenarios
-- Reduces reliance on:
-  - Frame stacking
-  - Implicit motion inference
-
----
-
-## 🔍 Ablation Study
-
-| Setting | Description |
-|--------|------------|
-| BEV only | Static perception baseline |
-| BEV + stacking | Implicit temporal modeling |
-| BEV + radar | Explicit dynamic sensing |
-| BEV + radar + LiDAR | Full multi-modal |
-
-**Observation:**  
-Radar-based dynamic information consistently improves performance over static-only inputs.
-
----
-
-## 🧠 Model Architecture
-
-| Component | Specification |
-|----------|-------------|
-| Input | BEV + Radar/LiDAR |
-| Fusion | Cross-attention |
-| Latent size | 64 |
-| Attention heads | 8 |
-| Final layer | 512 |
-| Activation | ReLU / GELU |
-| Normalization | LayerNorm |
-
-Encoders:
-- Channels: 16 → 32 → 64  
-- Kernels: 5×5, 3×3, 3×3  
-- Strides: 2, 2, 1  
-
----
-
-## ⚙️ Training Hyperparameters
-
-| Parameter | DQN | PPO | SAC |
-|----------|-----|-----|-----|
-| Steps | 1e5 | 5.24e5 | 1e5 |
-| γ | 0.99 | 0.99 | 0.99 |
-| LR | 1e-4 | multi | multi |
-| Batch | 64 | 256/64 | 16 |
-| Replay | 5e4 | — | 1e5 |
-| Target | 100 | — | τ=0.005 |
-
----
-
-## ⚙️ Installation
+### Create environment
 
 ```bash
 conda create -n carla913 python=3.8 -y
 conda activate carla913
-
+```
+### Ensure compatibility with CARLA dependencies
+```
 pip install -U "pip<24.1"
 pip install -U "setuptools<66" "wheel<0.41"
+```
+### Download CARLA
 
+```
 mkdir -p ~/carla
 cd ~/carla
-wget https://anonymous.4open.science/r/Spiking_MM_DQN-FFF3
+wget https://github.com/carla-simulator/carla/releases/download/0.9.13/CARLA_0.9.13.tar.gz
 tar -xvzf CARLA_0.9.13.tar.gz
+```
 
+### Install system dependencies
+```
+sudo apt update
+sudo apt install -y \
+    libtiff5 libpng16-16 libjpeg-dev libglu1-mesa \
+    libglib2.0-0 libsm6 libxext6 libxrender1 libgomp1
+```
+
+### Configure CARLA Python API
+
+```
 export CARLA_ROOT=~/carla/CARLA_0.9.13
 export PYTHONPATH=$CARLA_ROOT/PythonAPI/carla/dist/carla-0.9.13-py3.8-linux-x86_64.egg:$PYTHONPATH
+export PYTHONPATH=$CARLA_ROOT/PythonAPI/carla:$PYTHONPATH
+export PYTHONPATH=$CARLA_ROOT/PythonAPI/carla/agents:$PYTHONPATH
+```
 
+### Install gym-carla
+```
 git clone https://github.com/cjy1992/gym-carla.git
 cd gym-carla
 pip install -r requirements.txt
 pip install -e .
+```
+
+### 🖥️ Running CARLA
+
+```
+cd /path/to/CARLA_0.9.13
+./CarlaUE4.sh -RenderOffScreen -carla-port=2000
+```
+### ✅ Verification
+
+```
+python - <<'PY'
+import carla
+c = carla.Client('localhost', 2000)
+c.set_timeout(5.0)
+print("Client:", c.get_client_version())
+print("Server:", c.get_server_version())
+PY
+```
+
+Expected:
+
+```
+Client: 0.9.13
+Server: 0.9.13
+```
+
+### Quick Test
+```
+python test.py
+```
+
+## 📊 Benchmark
+
+We evaluate three representative RL algorithms:
+
+DQN — value-based
+
+PPO — on-policy actor-critic
+
+SAC — off-policy actor-critic
+
+All methods operate on the same multi-modal observation space (BEV + radar/LiDAR) and share a consistent encoder architecture.
+
+### 🧠 Model Architecture
+
+| Component              | Specification       |
+| ---------------------- | ------------------- |
+| Input modalities       | BEV + Radar / LiDAR |
+| Fusion                 | Cross-attention     |
+| Latent dimension       | 64                  |
+| Attention heads        | 8                   |
+| Final hidden layer     | 512                 |
+| Encoder activation     | ReLU                |
+| Transformer activation | GELU                |
+| Normalization          | LayerNorm           |
+| Positional encoding    | Learnable           |
+| Output heads           | Q / Actor / Critic  |
+
+Encoders (BEV & Radar/LiDAR):
+
+Channels: 16 → 32 → 64
+
+Kernels: 5×5, 3×3, 3×3
+
+Strides: 2, 2, 1
+
+### ⚙️ Training Hyperparameters
+
+| Parameter       | DQN                  | PPO                             | SAC                                    |
+| --------------- | -------------------- | ------------------------------- | -------------------------------------- |
+| Total steps     | 1e5                  | 5.24e5                          | 1e5                                    |
+| Discount (γ)    | 0.99                 | 0.99                            | 0.99                                   |
+| Learning rates  | En: 1e-5, Head: 5e-5 | Enc: 5e-5, Pol: 1e-4, Val: 1e-4 | Enc: 5e-5, Pol: 1e-4, Q: 1e-4, α: 1e-4 |
+| Batch size      | 64                   | 256 / 64                        | 16                                     |
+| Replay buffer   | 5e4                  | —                               | 1e5                                    |
+| Target update   | 100 steps            | —                               | τ = 0.005                              |
+| Exploration     | ε-greedy             | stochastic                      | entropy                                |
+| Loss            | TD                   | clipped objective               | SAC                                    |
+| GAE (λ)         | —                    | 0.95                            | —                                      |
+| Clip coef       | —                    | 0.2                             | —                                      |
+| Entropy coef    | —                    | 0.001                           | learned                                |
+| Reward scale    | —                    | 0.1                             | 0.1                                    |
+| Learning starts | —                    | —                               | 5000                                   |
+| Policy freq     | —                    | per update                      | 2                                      |
+
+## 📁 Project Structure
+
+```
+Radar_Carla_Gym/
+├── gym_carla/        # Environment implementation
+├── DQN/              # DQN implementation
+├── PPO/              # PPO implementation
+├── SAC/              # SAC implementation
+├── test.py           # Environment test script
+└── requirements.txt
+```
+
+## 🙏 Acknowledgment
+
+This project builds upon:
+
+https://github.com/cjy1992/gym-carla
+
+## 🔬 Research Use
+
+This benchmark supports:
+
+Multi-modal RL research
+
+Sensor fusion (radar vs LiDAR vs BEV)
+
+Robustness & generalization analysis
+
+Dynamic scene understanding in autonomous driving
+
+
+
+
+
