@@ -1,196 +1,83 @@
 # 🚗 A Standardized Multi-Modal Reinforcement Learning Benchmark for Autonomous Driving with Explicit Dynamic Sensing
 
-An OpenAI Gym-compatible environment for the CARLA simulator, designed for multi-modal reinforcement learning in autonomous driving for urban driving scenarios. This version is configured for CARLA 0.9.13 (updated from the original 0.9.6 setup).
+An OpenAI Gym-compatible CARLA environment for **multi-modal reinforcement learning (RL)** in urban autonomous driving, with a focus on **explicit dynamic sensing via radar**.
 
 ---
 
-# Overview
+## 📌 Overview
 
-This repository introduces a Gym-compatible CARLA benchmark for multi-modal reinforcement learning in autonomous driving, with a focus on explicit dynamic sensing through radar, and it is the formal implimentation of paper "A Standardized Multi-Modal Reinforcement Learning Benchmark for Autonomous Driving with Explicit Dynamic Sensing" submitted to URVIS CVPR Workshop. 
+This repository provides the official implementation of:
 
-The environment provides a multi-modal observation space including radar, joint radar/LiDAR, LiDAR, BEV, and ego-state features, where radar encodes motion and the joint radar/LiDAR representation combines dynamic and geometric information. All modalities can be returned as stacked frames, enabling temporal reasoning while remaining compatible with standard RL methods.
+> **A Standardized Multi-Modal Reinforcement Learning Benchmark for Autonomous Driving with Explicit Dynamic Sensing**  
+> *(Submitted to CVPR URVIS Workshop)*
 
-The benchmark supports controlled comparisons between explicit dynamic sensing and temporal stacking, allowing systematic evaluation of their impact on policy performance, robustness, and generalization.
+We introduce a **reproducible, Gym-compatible benchmark** built on CARLA (v0.9.13), designed for systematic evaluation of multi-modal RL algorithms under controlled conditions.
+
+### Key Features
+
+- **Multi-modal observation space**
+  - Radar (dynamic sensing)
+  - LiDAR (geometric structure)
+  - Joint Radar/LiDAR fusion
+  - Bird’s-Eye View (BEV) semantic rendering
+  - Ego-state features
+
+- **Explicit dynamic modeling**
+  - Radar directly encodes motion (velocity-aware perception)
+  - Reduces reliance on implicit temporal stacking
+
+- **Temporal representation**
+  - Frame stacking supported across all modalities
+
+- **Benchmarking capability**
+  - Enables controlled comparison between:
+    - Static perception (BEV / LiDAR)
+    - Dynamic sensing (radar-enhanced observations)
+
+This framework supports **robust, reproducible evaluation of perception–decision pipelines** in RL-based autonomous driving.
 
 ---
 
-# Requirements
+## ⚙️ Requirements
 
 - Ubuntu 20.04 / 22.04  
-- Python 3.8 (via conda)  
+- Python 3.8 (Conda recommended)  
 - CARLA 0.9.13  
 - NVIDIA GPU (recommended)
 
 ---
 
-# Installation
+## 🚀 Installation
 
 ```bash
-# create environment
+# Create environment
 conda create -n carla913 python=3.8 -y
 conda activate carla913
 
-# fix build tools (important for older deps)
+# Ensure compatibility with CARLA dependencies
 pip install -U "pip<24.1"
 pip install -U "setuptools<66" "wheel<0.41"
 
-# download and extract CARLA
+# Download CARLA
 mkdir -p ~/carla
 cd ~/carla
 wget https://github.com/carla-simulator/carla/releases/download/0.9.13/CARLA_0.9.13.tar.gz
 tar -xvzf CARLA_0.9.13.tar.gz
 
-# install system dependencies
+# Install system dependencies
 sudo apt update
-sudo apt install -y     libtiff5     libpng16-16     libjpeg-dev     libglu1-mesa     libglib2.0-0     libsm6     libxext6     libxrender1     libgomp1
+sudo apt install -y \
+    libtiff5 libpng16-16 libjpeg-dev libglu1-mesa \
+    libglib2.0-0 libsm6 libxext6 libxrender1 libgomp1
 
-# set CARLA python API
+# Configure CARLA Python API
 export CARLA_ROOT=~/carla/CARLA_0.9.13
 export PYTHONPATH=$CARLA_ROOT/PythonAPI/carla/dist/carla-0.9.13-py3.8-linux-x86_64.egg:$PYTHONPATH
 export PYTHONPATH=$CARLA_ROOT/PythonAPI/carla:$PYTHONPATH
 export PYTHONPATH=$CARLA_ROOT/PythonAPI/carla/agents:$PYTHONPATH
 
-# clone and install gym-carla
+# Install gym-carla
 git clone https://github.com/cjy1992/gym-carla.git
 cd gym-carla
 pip install -r requirements.txt
 pip install -e .
-```
-
-Note: Do NOT install `carla` via pip.
-
----
-
-# Running CARLA
-
-```bash
-cd /path/to/CARLA_0.9.13
-./CarlaUE4.sh -RenderOffScreen -carla-port=2000
-```
-
----
-
-# Verification
-
-```bash
-python - <<'PY'
-import carla
-c = carla.Client('localhost', 2000)
-c.set_timeout(5.0)
-print("Client:", c.get_client_version())
-print("Server:", c.get_server_version())
-PY
-```
-
-Expected:
-Client: 0.9.13  
-Server: 0.9.13  
-
-```bash
-python - <<'PY'
-import carla
-c = carla.Client('localhost', 2000)
-c.set_timeout(5.0)
-w = c.get_world()
-print([bp.id for bp in w.get_blueprint_library().filter("*radar*")])
-PY
-```
-
-Expected:
-['sensor.other.radar']
-
----
-
-# Test
-
-Verify the setup:
-
-```bash
-python test.py
-```
-
----
-
-# Benchmark
-
-To show the utility of the enviroment, the implimentation of DQN, PPO, and SAC using the proposed observation space that combines BEV with radar/LiDAR-based dynamic sensing. All of RL models use a similar encoder architecture as follows: 
-### Model Architecture
-
-| Parameter | Setting | Value / Description |
-|-----------|---------|---------------------|
-| Input modalities | — | Bird’s-eye view (BEV) and radar |
-| Fusion type | — | Cross-attention fusion |
-| Latent embedding size | latent_size | 64 |
-| Number of attention heads | num_heads | 8 |
-| Final hidden layer size | final_layer | 512 |
-| Q-network output | — | Discrete action values |
-| BEV encoder channels | — | 16 → 32 → 64 |
-| Radar/LiDAR encoder channels | — | 16 → 32 → 64 |
-| BEV convolution kernels | — | 5×5, 3×3, 3×3 |
-| Radar/LiDAR convolution kernels | — | 5×5, 3×3, 3×3 |
-| BEV convolution strides | — | 2, 2, 1 |
-| Radar convolution strides | — | 2, 2, 1 |
-| Encoder activation | — | ReLU |
-| Attention block normalization | — | LayerNorm |
-| Transformer MLP activation | — | GELU |
-| Positional encoding | — | Learnable positional embedding |
-| Output head | — | Linear Q, actor/critic-head, with ReLU hidden layer |
-
-Hyperparameters are as follows: 
-| Parameter                | DQN             | PPO                                 | SAC                                                 |
-| ------------------------ | --------------- | ----------------------------------- | --------------------------------------------------- |
-| **Total Steps**          | 1e5             | 5.24e5                              | 1e5                                                 |
-| **Discount ((\gamma))**  | 0.99            | 0.99                                | 0.99                                                |
-| **Learning Rate(s)**     | 1e-4            | Enc: 5e-5<br>Pol: 1e-4<br>Val: 1e-4 | Enc: 5e-5<br>Pol: 1e-4<br>Q: 1e-4<br>(\alpha): 1e-4 |
-| **Batch Size**           | 64              | 256 (rollout)<br>64 (minibatch)     | 16                                                  |
-| **Replay Buffer**        | 5e4             | —                                   | 1e5                                                 |
-| **Target Update**        | Every 100 steps | —                                   | Soft ((\tau=0.005))                                 |
-| **Optimizer**            | Adam            | Adam                                | Adam                                                |
-| **Exploration**          | ε-greedy        | Stochastic policy                   | Entropy-based                                       |
-| **Exploration Schedule** | ε: 1.0 → 0.1    | —                                   | Auto-tuned (\alpha)                                 |
-| **Loss**                 | TD loss         | Clipped objective                   | Soft actor-critic                                   |
-| **GAE ((\lambda))**      | —               | 0.95                                | —                                                   |
-| **Clip Coef**            | —               | 0.2                                 | —                                                   |
-| **Entropy Coef**         | —               | 0.001                               | Learned                                             |
-| **Reward Scale**         | —               | 0.1                                 | 0.1                                                 |
-| **Learning Starts**      | —               | —                                   | 5000                                                |
-| **Policy Freq**          | —               | Per update                          | 2                                                   |
-| **Target Freq**          | —               | —                                   | 1                                                   |
-| **Latent Size**          | 64              | 64                                  | 64                                                  |
-| **Attention Heads**      | 8               | 8                                   | 8                                                   |
-
-Their corrspong directory include the code of implemetnation. 
-# Project Structure
-
-```bash
-Radar_Carla_Gym/
-├── gym_carla/
-├── test.py
-├── requirements.txt
-├── DQN
-├── SAC
-├── PPO
-└── setup.py
-```
-
----
-
-# Important Notes
-
-- CARLA server and Python API must both be 0.9.13  
-- Do not mix CARLA versions  
-- Do not install CARLA via pip  
-- Supported Python version: 3.7–3.8  
-
----
-
-# License
-
-MIT License
-
----
-
-# Acknowledgement
-
-Original repository:  
-https://github.com/cjy1992/gym-carla
