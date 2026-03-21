@@ -179,6 +179,18 @@ Strides: 2, 2, 1
 | Learning starts | —                    | —                               | 5000                                   |
 | Policy freq     | —                    | per update                      | 2                                      |
 
+## 📁 Project Structure
+
+```
+Radar_Carla_Gym/
+├── gym_carla/        # Environment implementation
+├── DQN/              # DQN implementation
+├── PPO/              # PPO implementation
+├── SAC/              # SAC implementation
+├── test.py           # Environment test script
+└── requirements.txt
+```
+
 
 
 
