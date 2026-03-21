@@ -120,4 +120,21 @@ Client: 0.9.13
 Server: 0.9.13
 ```
 
+### Quick Test
+```
+python test.py
+```
+
+### 📊 Benchmark
+
+We evaluate three representative RL algorithms:
+
+DQN — value-based
+PPO — on-policy actor-critic
+SAC — off-policy actor-critic
+
+All methods operate on the same multi-modal observation space (BEV + radar/LiDAR) and share a consistent encoder architecture.
+
+
+
 
