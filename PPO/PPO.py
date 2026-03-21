@@ -140,7 +140,7 @@ def step_env(env, action):
 
 def obs_to_tensors(obs, device):
     birdeye = torch.as_tensor(obs["birdeye"], dtype=torch.float32, device=device)
-    radar = torch.as_tensor(obs["radar"], dtype=torch.float32, device=device)
+    radar = torch.as_tensor(obs["radar/lidar"], dtype=torch.float32, device=device)
     return birdeye, radar
 
 
@@ -472,7 +472,7 @@ if __name__ == "__main__":
 
     initial_obs = reset_env(env, args.seed)
     obs_b_shape = initial_obs["birdeye"].shape
-    obs_r_shape = initial_obs["radar"].shape
+    obs_r_shape = initial_obs["radar/lidar"].shape
 
     print("birdeye shape:", obs_b_shape)
     print("radar shape:", obs_r_shape)
