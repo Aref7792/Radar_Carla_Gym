@@ -129,11 +129,11 @@ python test.py
 
 We evaluate three representative RL algorithms:
 
-DQN — value-based
+- DQN — value-based
 
-PPO — on-policy actor-critic
+- PPO — on-policy actor-critic
 
-SAC — off-policy actor-critic
+- SAC — off-policy actor-critic
 
 All methods operate on the same multi-modal observation space (BEV + radar/LiDAR) and share a consistent encoder architecture.
 
