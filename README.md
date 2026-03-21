@@ -103,6 +103,8 @@ Expected:
 
 # Test
 
+Verify the setup:
+
 ```bash
 python test.py
 ```
