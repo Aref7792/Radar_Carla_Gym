@@ -191,6 +191,12 @@ Radar_Carla_Gym/
 └── requirements.txt
 ```
 
+## 🙏 Acknowledgment
+
+This project builds upon:
+
+https://github.com/cjy1992/gym-carla
+
 
 
 
