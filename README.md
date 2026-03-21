@@ -111,7 +111,11 @@ python test.py
 
 # Project Structure
 
-<pre> gym-carla/ ├── gym_carla/ ├── test.py ├── requirements.txt ├── setup.py </pre>
+gym-carla/
+|-- gym_carla/
+|-- test.py
+|-- requirements.txt
+`-- setup.py
 
 ---
 
